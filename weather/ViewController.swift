@@ -61,6 +61,21 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onAddPressed(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Add Location", message: "Enter location to add.", preferredStyle: .alert);
+        
+        alertController.addTextField { textField in
+            textField.placeholder = "Enter Location";
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel));
+        alertController.addAction(UIAlertAction(title: "Add", style: .default, handler: { UIAlertAction in
+            if let tfTitle = alertController.textFields?[0] as? UITextField {
+                self.locations.append(LocationItem(name: tfTitle.text ?? "", temp: 21, highTemp: 23, lowTemp: 20, image: "sun.cloud.fill"));
+                self.tableView.reloadData();
+            }
+        }));
+        
+        self.present(alertController, animated: true);
     }
 }
 
