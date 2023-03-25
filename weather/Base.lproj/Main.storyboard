@@ -24,17 +24,73 @@
                                 </constraints>
                                 <standardMapConfiguration key="preferredConfiguration"/>
                             </mapView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="APR-Ib-WEd">
+                                <rect key="frame" x="0.0" y="768" width="393" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="7oK-nT-kNR"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="0AY-Xm-M1e"/>
+                                    <barButtonItem systemItem="add" id="Ku2-fQ-Afy">
+                                        <connections>
+                                            <action selector="onAddPressed:" destination="BYZ-38-t0r" id="RPI-wF-rfN"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="MGN-fB-zEY">
+                                <rect key="frame" x="0.0" y="500" width="393" height="268"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="2av-dc-cp3" detailTextLabel="E27-qc-t3n" imageView="QYT-bM-A7z" style="IBUITableViewCellStyleSubtitle" id="1mR-gU-0hT">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1mR-gU-0hT" id="g7d-5W-V2G">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2av-dc-cp3">
+                                                    <rect key="frame" x="59" y="6.0000000000000009" width="25" height="14.333333333333334"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="E27-qc-t3n">
+                                                    <rect key="frame" x="59.000000000000014" y="22.333333333333336" width="32.666666666666664" height="14.333333333333334"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="sun.min" catalog="system" id="QYT-bM-A7z">
+                                                    <rect key="frame" x="22.333333333333336" y="12.333333333333334" width="19.333333333333332" height="18.666666666666668"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="hpk-Z1-URE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0ho-Sh-rs2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="APR-Ib-WEd" secondAttribute="bottom" id="16P-hm-PMz"/>
+                            <constraint firstItem="MGN-fB-zEY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6GP-aw-A0M"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MGN-fB-zEY" secondAttribute="trailing" id="8R5-4f-uDp"/>
                             <constraint firstItem="hpk-Z1-URE" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="AFA-Hz-quV"/>
+                            <constraint firstItem="APR-Ib-WEd" firstAttribute="top" secondItem="MGN-fB-zEY" secondAttribute="bottom" id="HFr-q5-lRm"/>
+                            <constraint firstItem="APR-Ib-WEd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Nmz-9Z-e7C"/>
+                            <constraint firstItem="APR-Ib-WEd" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="PTd-Zw-gIv"/>
+                            <constraint firstItem="MGN-fB-zEY" firstAttribute="top" secondItem="hpk-Z1-URE" secondAttribute="bottom" id="cbw-Ah-VF3"/>
                             <constraint firstItem="hpk-Z1-URE" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="dSm-qS-5Iw"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="hpk-Z1-URE" id="bUU-Nf-LWs"/>
+                        <outlet property="tableView" destination="MGN-fB-zEY" id="tl2-ni-YlT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -43,6 +99,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="sun.min" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -12,13 +12,24 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!;
     
+    private let locationManger = CLLocationManager();
+    
+    @IBOutlet weak var tableView: UITableView!;
+    
+    var locations: [LocationItem] = [];
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        locationManger.requestWhenInUseAuthorization();
         
         setupMap();
         
-        addAnnotation(location: CLLocation(latitude: 43.0130, longitude: -81.1994))
+        addAnnotation(location: CLLocation(latitude: 43.0130, longitude: -81.1994));
+        
+        tableView.dataSource = self;
+        
+        addDefaultData();
     }
     
     func addAnnotation(location: CLLocation) {
@@ -30,6 +41,8 @@ class ViewController: UIViewController {
     func setupMap() {
         mapView.delegate = self;
         
+        mapView.showsUserLocation = true;
+        
         // 43.0130, -81.1994
         let location = CLLocation(latitude: 43.0130, longitude: -81.1994);
         
@@ -39,6 +52,39 @@ class ViewController: UIViewController {
         mapView.setCameraBoundary(MKMapView.CameraBoundary(coordinateRegion: region), animated: true)
         
         mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000), animated: true);
+    }
+    
+    func addDefaultData() {
+        locations.append(LocationItem(name: "Vancouver", temp: 22, highTemp: 23, lowTemp: 21, image: "sunny"));
+        locations.append(LocationItem(name: "London", temp: 14, highTemp: 17, lowTemp: 10, image: "sunny"));
+        locations.append(LocationItem(name: "Toronto", temp: 21, highTemp: 25, lowTemp: 17, image: "sunny"));
+    }
+    
+    @IBAction func onAddPressed(_ sender: UIBarButtonItem) {
+    }
+}
+
+extension ViewController: UITableViewDataSource {
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return locations.count;
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "locationItemCell");
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "locationItemCell", for: indexPath);
+        let item = locations[indexPath.row];
+        
+        var content = cell.defaultContentConfiguration();
+        content.text = item.name;
+        content.secondaryText = "\(item.temp) C (H: \(item.highTemp) L: \(item.lowTemp)"
+        content.image = UIImage(systemName: "sun.min");
+        
+        cell.contentConfiguration = content;
+        
+        return cell;
     }
     
     
@@ -83,6 +129,20 @@ extension ViewController: MKMapViewDelegate {
         
         return view;
     }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        guard let coordinates = view.annotation?.coordinate else {
+            return;
+        }
+        
+        let launchOptions = [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
+        ]
+        
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates));
+        mapItem.openInMaps(launchOptions: launchOptions);
+    }
 }
 
 class MyAnnotation: NSObject, MKAnnotation {
@@ -99,5 +159,13 @@ class MyAnnotation: NSObject, MKAnnotation {
         
         super.init();
     }
+}
+
+struct LocationItem {
+    let name: String;
+    let temp: Double;
+    let highTemp: Double;
+    let lowTemp: Double;
+    let image: String;
 }
 
