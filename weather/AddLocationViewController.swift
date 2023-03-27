@@ -173,7 +173,8 @@ class AddLocationViewController: UIViewController {
                     temp: (current.temp_c),
                     highTemp: (forecast.forecastday[0].day.maxtemp_c),
                     lowTemp: (forecast.forecastday[0].day.mintemp_c),
-                    image: getIconName(current.condition.code, current.is_day)
+                    image: getIconName(current.condition.code, current.is_day),
+                    coordinate: CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon)
                 );
                 mainViewController.annotation = MapAnnotation(
                     coordinate: CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon),

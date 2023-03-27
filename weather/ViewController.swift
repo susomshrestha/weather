@@ -77,6 +77,8 @@ class ViewController: UIViewController {
             addAnnotation(annotation: annotation);
         }
     }
+    
+    
 }
 
 extension ViewController: UITableViewDataSource {
@@ -100,27 +102,11 @@ extension ViewController: UITableViewDataSource {
         
         return cell;
     }
-    
-    
 }
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.showToast(message: "\(self.locations[indexPath.row].name) pressed");
-    }
-}
-
-extension ViewController{
-    
-    func showToast(message : String, seconds: Double = 2){
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        //        alert.view.backgroundColor = .black
-        //        alert.view.alpha = 0.5
-        //        alert.view.layer.cornerRadius = 15
-        self.present(alert, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds) {
-            alert.dismiss(animated: true)
-        }
+        mapView.setCenter(self.locations[indexPath.row].coordinate, animated: true)
     }
 }
 

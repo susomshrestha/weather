@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct LocationModel {
     let name: String;
@@ -13,4 +14,5 @@ struct LocationModel {
     let highTemp: Double;
     let lowTemp: Double;
     let image: String;
+    let coordinate: CLLocationCoordinate2D;
 }
