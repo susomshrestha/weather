@@ -22,6 +22,9 @@ class ViewController: UIViewController {
     
     var annotation: MapAnnotation?;
     
+    var latitude: Double?;
+    var longitude: Double?;
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -78,6 +81,14 @@ class ViewController: UIViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "goToDetail") {
+            let detailViewController = segue.destination as! DetailViewController;
+            detailViewController.latitude = latitude;
+            detailViewController.longitude = longitude;
+        }
+    }
+    
     
 }
 
@@ -106,11 +117,14 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        latitude = self.locations[indexPath.row].coordinate.latitude;
+        longitude = self.locations[indexPath.row].coordinate.longitude;
         mapView.setCenter(self.locations[indexPath.row].coordinate, animated: true)
     }
 }
 
 extension ViewController: MKMapViewDelegate {
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "weather";
         
@@ -155,12 +169,14 @@ extension ViewController: MKMapViewDelegate {
             return;
         }
         
-        let launchOptions = [
-            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
-        ]
-        
-        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates));
-        mapItem.openInMaps(launchOptions: launchOptions);
+        //        let launchOptions = [
+        //            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
+        //        ]
+        //
+        //        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates));
+        //        mapItem.openInMaps(launchOptions: launchOptions);
+        print(coordinates)
+        performSegue(withIdentifier: "goToDetail", sender: self)
     }
 }
 

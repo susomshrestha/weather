@@ -27,6 +27,9 @@ struct Day: Decodable {
     let maxtemp_f: Double;
     let mintemp_c: Double;
     let mintemp_f: Double;
+    let avgtemp_c: Double;
+    let avgtemp_f: Double;
+    let condition: Condition;
 }
 
 struct Location: Decodable {

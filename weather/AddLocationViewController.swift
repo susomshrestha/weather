@@ -86,54 +86,8 @@ class AddLocationViewController: UIViewController {
     
     func updateIconAndBg(current: Current) {
         updateBgAndColors(isDay: current.is_day);
-        imageView.preferredSymbolConfiguration = getIconCongiguration(current.condition.code, current.is_day);
-        imageView.image = UIImage(systemName: getIconName(current.condition.code, current.is_day));
-    }
-    
-    func getIconCongiguration(_ code: Int, _ isDay: Int) -> UIImage.SymbolConfiguration {
-        var config: UIImage.SymbolConfiguration;
-        if(isDay == 1) {
-            if(code == 1000) {
-                config = UIImage.SymbolConfiguration(paletteColors: [.yellow, .white]);
-            } else {
-                config = UIImage.SymbolConfiguration(paletteColors: [.white, .yellow, .white]);
-            }
-        } else {
-            config = UIImage.SymbolConfiguration(paletteColors: [.darkGray, .white, .white]);
-        }
-        return config;
-    }
-    
-    func getIconName(_ code: Int, _ isDay: Int) -> String {
-        var iconName = "";
-        switch code {
-        case 1000: // sunny or clear
-            iconName = "sun.max.circle.fill";
-            break;
-        case 1003,1006,1009: // partly cloudy, cloudy, overcast
-            iconName = "cloud.sun.fill"
-            break;
-        case 1183, 1189, 1195: // light rain, moderate rain, heavy rain
-            iconName = "cloud.sun.rain.fill"
-            break;
-        case 1213, 1219, 1225: // light snow, moderate snow, heavy snow
-            iconName = "cloud.snow.fill"
-            break;
-        case 1255: // light snow shower
-            iconName = "cloud.snow.circle"
-            break;
-        case 1198, 1201: // light freezing rain , moderate or heavy freezing
-            iconName = "cloud.rain.circle"
-            break;
-        default:
-            iconName = "cloud.sun.rain.fill";
-        }
-        if(isDay == 0) {
-            iconName = iconName.replacingOccurrences(of: "sun", with: "moon");
-            iconName = iconName.replacingOccurrences(of: "max.", with: "");
-        }
-        
-        return iconName;
+        imageView.preferredSymbolConfiguration = Weather.getIconCongiguration(current.condition.code, current.is_day);
+        imageView.image = UIImage(systemName: Weather.getIconName(current.condition.code, current.is_day));
     }
     
     func updateBgAndColors(isDay: Int) {
@@ -173,14 +127,14 @@ class AddLocationViewController: UIViewController {
                     temp: (current.temp_c),
                     highTemp: (forecast.forecastday[0].day.maxtemp_c),
                     lowTemp: (forecast.forecastday[0].day.mintemp_c),
-                    image: getIconName(current.condition.code, current.is_day),
+                    image: Weather.getIconName(current.condition.code, current.is_day),
                     coordinate: CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon)
                 );
                 mainViewController.annotation = MapAnnotation(
                     coordinate: CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon),
                     title: "\(current.temp_c)",
                     subtitle: "Temp: \(current.temp_c), Feels Like: \(current.feelslike_c)",
-                    iconName: getIconName(current.condition.code, current.is_day),
+                    iconName: Weather.getIconName(current.condition.code, current.is_day),
                     gylph: "W")
             }
             
