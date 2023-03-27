@@ -12,75 +12,74 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!;
     
-    private let locationManger = CLLocationManager();
+    public let locationManager = CLLocationManager();
     
     @IBOutlet weak var tableView: UITableView!;
     
-    var locations: [LocationItem] = [];
+    var locations: [LocationModel] = [];
+    
+    var savedLocation: LocationModel?;
+    
+    var annotation: MapAnnotation?;
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        locationManger.requestWhenInUseAuthorization();
+        locationManager.delegate = self;
         
-        setupMap();
+        locationManager.requestWhenInUseAuthorization();
         
-        addAnnotation(location: CLLocation(latitude: 43.0130, longitude: -81.1994));
+        //        addAnnotation(location: CLLocation(latitude: 23.0130, longitude: -81.1994));
         
-        tableView.dataSource = self;
-        
-        addDefaultData();
+        initializeTableView();
     }
     
-    func addAnnotation(location: CLLocation) {
-        let annotation = MyAnnotation(coordinate: location.coordinate, title: "Title", subtitle: "Sub Title", gylph: "W");
-        
+    func initializeTableView() {
+        tableView.dataSource = self;
+        tableView.delegate = self;
+    }
+    
+    func addAnnotation(annotation: MapAnnotation) {
         mapView.addAnnotation(annotation);
     }
     
-    func setupMap() {
+    func setupMap(_ latitude: Double, _ longitude: Double, recenter: Bool = false) {
         mapView.delegate = self;
         
-        mapView.showsUserLocation = true;
+        //        mapView.showsUserLocation = true;
         
-        // 43.0130, -81.1994
-        let location = CLLocation(latitude: 43.0130, longitude: -81.1994);
+        // 43.0130, -81.1994 (fanshawe location)
+        let location = CLLocation(latitude: latitude, longitude: longitude);
+        if(!recenter) {
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            mapView.setRegion(region, animated: true);
+            return;
+        }
         
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-        mapView.setRegion(region, animated: true);
+        mapView.setCenter(location.coordinate, animated: true);
         
-        mapView.setCameraBoundary(MKMapView.CameraBoundary(coordinateRegion: region), animated: true)
-        
-        mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000), animated: true);
-    }
-    
-    func addDefaultData() {
-        locations.append(LocationItem(name: "Vancouver", temp: 22, highTemp: 23, lowTemp: 21, image: "sunny"));
-        locations.append(LocationItem(name: "London", temp: 14, highTemp: 17, lowTemp: 10, image: "sunny"));
-        locations.append(LocationItem(name: "Toronto", temp: 21, highTemp: 25, lowTemp: 17, image: "sunny"));
+        //        mapView.setCameraBoundary(MKMapView.CameraBoundary(coordinateRegion: region), animated: true)
+        //
+        //        mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000), animated: true);
     }
     
     @IBAction func onAddPressed(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "Add Location", message: "Enter location to add.", preferredStyle: .alert);
-        
-        alertController.addTextField { textField in
-            textField.placeholder = "Enter Location";
+        performSegue(withIdentifier: "goToAddLocationScreen", sender: self)
+    }
+    
+    
+    @IBAction func unwindToMain(_ sender: UIStoryboardSegue) {
+        if let location = savedLocation,
+           let annotation = self.annotation{
+            locations.append(location);
+            tableView.reloadData();
+            
+            addAnnotation(annotation: annotation);
         }
-        
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel));
-        alertController.addAction(UIAlertAction(title: "Add", style: .default, handler: { UIAlertAction in
-            if let tfTitle = alertController.textFields?[0] as? UITextField {
-                self.locations.append(LocationItem(name: tfTitle.text ?? "", temp: 21, highTemp: 23, lowTemp: 20, image: "sun.cloud.fill"));
-                self.tableView.reloadData();
-            }
-        }));
-        
-        self.present(alertController, animated: true);
     }
 }
 
 extension ViewController: UITableViewDataSource {
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return locations.count;
@@ -94,8 +93,8 @@ extension ViewController: UITableViewDataSource {
         
         var content = cell.defaultContentConfiguration();
         content.text = item.name;
-        content.secondaryText = "\(item.temp) C (H: \(item.highTemp) L: \(item.lowTemp)"
-        content.image = UIImage(systemName: "sun.min");
+        content.secondaryText = "\(item.temp) C (H: \(item.highTemp) L: \(item.lowTemp))"
+        content.image = UIImage(systemName: item.image);
         
         cell.contentConfiguration = content;
         
@@ -103,6 +102,26 @@ extension ViewController: UITableViewDataSource {
     }
     
     
+}
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.showToast(message: "\(self.locations[indexPath.row].name) pressed");
+    }
+}
+
+extension ViewController{
+    
+    func showToast(message : String, seconds: Double = 2){
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        //        alert.view.backgroundColor = .black
+        //        alert.view.alpha = 0.5
+        //        alert.view.layer.cornerRadius = 15
+        self.present(alert, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds) {
+            alert.dismiss(animated: true)
+        }
+    }
 }
 
 extension ViewController: MKMapViewDelegate {
@@ -131,16 +150,15 @@ extension ViewController: MKMapViewDelegate {
         let button = UIButton(type: .detailDisclosure)
         view.rightCalloutAccessoryView = button;
         
-        // add image on left of marker view
-        let image = UIImage(systemName: "graduationcap.circle.fill");
-        view.leftCalloutAccessoryView = UIImageView(image: image);
-        
-        // add glyph text
         // custome property so casting to MyAnnotation
-        if let annotation = annotation as? MyAnnotation {
+        if let annotation = annotation as? MapAnnotation {
+            // add glyph text
             view.glyphText = annotation.glyph;
+            
+            // add image on left of marker view
+            let image = UIImage(systemName: annotation.iconName ?? "");
+            view.leftCalloutAccessoryView = UIImageView(image: image);
         }
-        
         
         return view;
     }
@@ -160,27 +178,21 @@ extension ViewController: MKMapViewDelegate {
     }
 }
 
-class MyAnnotation: NSObject, MKAnnotation {
+class MapAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D;
     var title: String?;
     var subtitle: String?;
     var glyph: String?;
+    var iconName: String?;
     
-    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, gylph: String? = nil) {
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, iconName: String, gylph: String? = nil) {
         self.coordinate = coordinate;
         self.title = title;
         self.subtitle = subtitle;
         self.glyph = gylph;
+        self.iconName = iconName;
         
         super.init();
     }
-}
-
-struct LocationItem {
-    let name: String;
-    let temp: Double;
-    let highTemp: Double;
-    let lowTemp: Double;
-    let image: String;
 }
 

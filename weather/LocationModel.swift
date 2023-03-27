@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct LocationModel {
+    let name: String;
+    let temp: Double;
+    let highTemp: Double;
+    let lowTemp: Double;
+    let image: String;
+}
