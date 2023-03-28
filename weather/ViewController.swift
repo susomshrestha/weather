@@ -130,11 +130,22 @@ extension ViewController: MKMapViewDelegate {
         
         var view: MKMarkerAnnotationView;
         
+        
         // if we have reusable view use the view
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView {
             dequeuedView.annotation = annotation;
             
             view = dequeuedView;
+            
+            if let annotation = annotation as? MapAnnotation {
+                
+                view.markerTintColor = getMarkerColor(temp: annotation.temp ?? 0);
+                            
+                // add image on left of marker view
+                let image = UIImage(systemName: annotation.iconName ?? "");
+                view.leftCalloutAccessoryView = UIImageView(image: image);
+            }
+
             return view;
         }
         
@@ -155,6 +166,8 @@ extension ViewController: MKMapViewDelegate {
             // add glyph text
             view.glyphText = annotation.glyph;
             
+            view.markerTintColor = getMarkerColor(temp: annotation.temp ?? 0);
+                        
             // add image on left of marker view
             let image = UIImage(systemName: annotation.iconName ?? "");
             view.leftCalloutAccessoryView = UIImageView(image: image);
@@ -163,9 +176,25 @@ extension ViewController: MKMapViewDelegate {
         return view;
     }
     
+    func getMarkerColor(temp: Double) -> UIColor {
+        if(temp > 35) {
+            return UIColor.red;
+        } else if (temp >= 25 && temp <= 35) {
+            return UIColor.orange;
+        } else if (temp >= 17 && temp <= 24) {
+            return UIColor.yellow;
+        } else if (temp >= 12 && temp <= 16) {
+            return UIColor.purple;
+        } else if (temp >= 0 && temp <= 11) {
+            return UIColor.blue;
+        } else {
+            return UIColor.gray;
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
-        guard let coordinates = view.annotation?.coordinate else {
+        guard (view.annotation?.coordinate) != nil else {
             return;
         }
         
@@ -175,7 +204,6 @@ extension ViewController: MKMapViewDelegate {
         //
         //        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates));
         //        mapItem.openInMaps(launchOptions: launchOptions);
-        print(coordinates)
         performSegue(withIdentifier: "goToDetail", sender: self)
     }
 }
@@ -186,14 +214,16 @@ class MapAnnotation: NSObject, MKAnnotation {
     var subtitle: String?;
     var glyph: String?;
     var iconName: String?;
-    
-    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, iconName: String, gylph: String? = nil) {
+    var temp: Double?;
+
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, iconName: String, temp: Double, gylph: String? = nil) {
         self.coordinate = coordinate;
         self.title = title;
         self.subtitle = subtitle;
         self.glyph = gylph;
         self.iconName = iconName;
-        
+        self.temp = temp;
+
         super.init();
     }
 }

@@ -135,6 +135,7 @@ class AddLocationViewController: UIViewController {
                     title: "\(current.temp_c)",
                     subtitle: "Temp: \(current.temp_c), Feels Like: \(current.feelslike_c)",
                     iconName: Weather.getIconName(current.condition.code, current.is_day),
+                    temp: current.temp_c,
                     gylph: "W")
             }
             
