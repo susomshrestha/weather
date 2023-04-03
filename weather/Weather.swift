@@ -11,6 +11,7 @@ import UIKit
 class Weather {
     
     static func getURL(location: String, day: Int) -> URL? {
+        // build weather api endpoint
         let baseUrl = "https://api.weatherapi.com/v1";
         let currentEndpoint = "/forecast.json";
         let key = "key=d35a5e6ef05f448b8ba191139231303";
@@ -60,9 +61,11 @@ class Weather {
     }
     
     static func parseJson(data: Data) -> WeatherResponse? {
+        // initialize json decoder
         let decoder = JSONDecoder();
         var weatherResponse: WeatherResponse?;
         
+        // decode response from api
         do {
             weatherResponse =  try decoder.decode(WeatherResponse.self, from: data)
         } catch {
@@ -72,6 +75,7 @@ class Weather {
         return weatherResponse;
     }
     
+    // get icon configuration for weather icons
     static func getIconCongiguration(_ code: Int, _ isDay: Int) -> UIImage.SymbolConfiguration {
         var config: UIImage.SymbolConfiguration;
         if(isDay == 1) {
@@ -86,6 +90,7 @@ class Weather {
         return config;
     }
     
+    // get icon names for weather according to codes
     static func getIconName(_ code: Int, _ isDay: Int) -> String {
         var iconName = "";
         switch code {

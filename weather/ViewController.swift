@@ -167,8 +167,9 @@ extension ViewController: MKMapViewDelegate {
             // add glyph text
             view.glyphText = annotation.glyph;
             
+            // set marker background color
             view.markerTintColor = getMarkerColor(temp: annotation.temp ?? 0);
-            
+                        
             // add image on left of marker view
             let image = UIImage(systemName: annotation.iconName ?? "");
             view.leftCalloutAccessoryView = UIImageView(image: image);
@@ -178,6 +179,7 @@ extension ViewController: MKMapViewDelegate {
     }
     
     func getMarkerColor(temp: Double) -> UIColor {
+        // return color according to the temperatere
         if(temp > 35) {
             return UIColor.red;
         } else if (temp >= 25 && temp <= 35) {
@@ -199,12 +201,12 @@ extension ViewController: MKMapViewDelegate {
             return;
         }
         
-        //        let launchOptions = [
-        //            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
-        //        ]
-        //
-        //        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates));
-        //        mapItem.openInMaps(launchOptions: launchOptions);
+        // let launchOptions = [
+        //   MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
+        // ]
+        // let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates));
+        // mapItem.openInMaps(launchOptions: launchOptions);
+        
         performSegue(withIdentifier: "goToDetail", sender: self)
     }
 }

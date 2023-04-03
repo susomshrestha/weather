@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad();
         
         initializeTableView();
-        getForecast();
+        getForecast(); // initially get the forecast of location
     }
     
     func getForecast() {
@@ -44,6 +44,7 @@ class DetailViewController: UIViewController {
     }
     
     func populateWeatherData(weatherResponse: WeatherResponse) {
+        // populate current weather data
         if let location = weatherResponse.location,
            let current = weatherResponse.current,
            let forecast = weatherResponse.forecast {
@@ -57,6 +58,7 @@ class DetailViewController: UIViewController {
     }
     
     func populateForecast(forecast: Forecast) {
+        // populate 3 day forecast in table view
         for cast in forecast.forecastday {
             forecasts.append(cast);
         }
@@ -89,11 +91,16 @@ extension DetailViewController: UITableViewDataSource {
         // Set Date Format
         dateFormatter.dateFormat = "yyyy-MM-dd";
         
+        // get weekday and set to content in row
         content.text = Calendar.current.weekdaySymbols[Calendar.current.component(.weekday, from: dateFormatter.date(from: item.date) ?? Date()) - 1];
         
+        // set secondary text in row
         content.secondaryText = "\(item.day.avgtemp_c) C";
+        
+        // set row image
         content.image = UIImage(systemName: Weather.getIconName(item.day.condition.code, 1));
         
+        // show text and sec text in same line in row
         content.prefersSideBySideTextAndSecondaryText = true;
         
         cell.contentConfiguration = content;
