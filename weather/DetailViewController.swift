@@ -94,6 +94,8 @@ extension DetailViewController: UITableViewDataSource {
         content.secondaryText = "\(item.day.avgtemp_c) C";
         content.image = UIImage(systemName: Weather.getIconName(item.day.condition.code, 1));
         
+        content.prefersSideBySideTextAndSecondaryText = true;
+        
         cell.contentConfiguration = content;
         
         return cell;

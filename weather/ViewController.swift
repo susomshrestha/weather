@@ -32,7 +32,7 @@ class ViewController: UIViewController {
         
         locationManager.requestWhenInUseAuthorization();
         
-        //        addAnnotation(location: CLLocation(latitude: 23.0130, longitude: -81.1994));
+        // addAnnotation(location: CLLocation(latitude: 23.0130, longitude: -81.1994));
         
         initializeTableView();
     }
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
     func setupMap(_ latitude: Double, _ longitude: Double, recenter: Bool = false) {
         mapView.delegate = self;
         
-        //        mapView.showsUserLocation = true;
+        // mapView.showsUserLocation = true;
         
         // 43.0130, -81.1994 (fanshawe location)
         let location = CLLocation(latitude: latitude, longitude: longitude);
@@ -59,11 +59,11 @@ class ViewController: UIViewController {
             return;
         }
         
+        // set map center to given coordinates
         mapView.setCenter(location.coordinate, animated: true);
         
-        //        mapView.setCameraBoundary(MKMapView.CameraBoundary(coordinateRegion: region), animated: true)
-        //
-        //        mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000), animated: true);
+        // mapView.setCameraBoundary(MKMapView.CameraBoundary(coordinateRegion: region), animated: true)
+        // mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000), animated: true);
     }
     
     @IBAction func onAddPressed(_ sender: UIBarButtonItem) {
@@ -82,6 +82,7 @@ class ViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // prepare view for Detail page
         if(segue.identifier == "goToDetail") {
             let detailViewController = segue.destination as! DetailViewController;
             detailViewController.latitude = latitude;
@@ -140,12 +141,12 @@ extension ViewController: MKMapViewDelegate {
             if let annotation = annotation as? MapAnnotation {
                 
                 view.markerTintColor = getMarkerColor(temp: annotation.temp ?? 0);
-                            
+                
                 // add image on left of marker view
                 let image = UIImage(systemName: annotation.iconName ?? "");
                 view.leftCalloutAccessoryView = UIImageView(image: image);
             }
-
+            
             return view;
         }
         
@@ -167,7 +168,7 @@ extension ViewController: MKMapViewDelegate {
             view.glyphText = annotation.glyph;
             
             view.markerTintColor = getMarkerColor(temp: annotation.temp ?? 0);
-                        
+            
             // add image on left of marker view
             let image = UIImage(systemName: annotation.iconName ?? "");
             view.leftCalloutAccessoryView = UIImageView(image: image);
@@ -215,7 +216,7 @@ class MapAnnotation: NSObject, MKAnnotation {
     var glyph: String?;
     var iconName: String?;
     var temp: Double?;
-
+    
     init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, iconName: String, temp: Double, gylph: String? = nil) {
         self.coordinate = coordinate;
         self.title = title;
@@ -223,7 +224,7 @@ class MapAnnotation: NSObject, MKAnnotation {
         self.glyph = gylph;
         self.iconName = iconName;
         self.temp = temp;
-
+        
         super.init();
     }
 }
