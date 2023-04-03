@@ -43,7 +43,6 @@ class Weather {
             guard let data = data else {
                 return;
             }
-            print(data)
             
             if let weatherRes = self.parseJson(data: data) {
                 DispatchQueue.main.async {

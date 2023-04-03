@@ -169,7 +169,7 @@ extension ViewController: MKMapViewDelegate {
             
             // set marker background color
             view.markerTintColor = getMarkerColor(temp: annotation.temp ?? 0);
-                        
+            
             // add image on left of marker view
             let image = UIImage(systemName: annotation.iconName ?? "");
             view.leftCalloutAccessoryView = UIImageView(image: image);
@@ -187,11 +187,11 @@ extension ViewController: MKMapViewDelegate {
         } else if (temp >= 17 && temp <= 24) {
             return UIColor.yellow;
         } else if (temp >= 12 && temp <= 16) {
-            return UIColor.purple;
+            return UIColor.init(red: 0, green: 0, blue: 1, alpha: 1);
         } else if (temp >= 0 && temp <= 11) {
-            return UIColor.blue;
+            return UIColor.init(red: 0, green: 0, blue: 0.50999, alpha: 1);
         } else {
-            return UIColor.gray;
+            return UIColor.purple;
         }
     }
     
