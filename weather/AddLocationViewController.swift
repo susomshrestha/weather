@@ -132,7 +132,7 @@ class AddLocationViewController: UIViewController {
                 );
                 mainViewController.annotation = MapAnnotation(
                     coordinate: CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon),
-                    title: "\(current.temp_c)",
+                    title: "\(current.temp_c) C \(current.condition.text)",
                     subtitle: "Temp: \(current.temp_c), Feels Like: \(current.feelslike_c)",
                     iconName: Weather.getIconName(current.condition.code, current.is_day),
                     temp: current.temp_c,
