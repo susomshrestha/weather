@@ -14,7 +14,8 @@ class Weather {
         // build weather api endpoint
         let baseUrl = "https://api.weatherapi.com/v1";
         let currentEndpoint = "/forecast.json";
-        let key = "key=d35a5e6ef05f448b8ba191139231303";
+        let key = "key=246e2d71c91042c8bc2113345231804x";
+//        246e2d71c91042c8bc2113345231804
         let location = "q=\(location)"
         let day = "days=\(day)"
         
@@ -44,6 +45,17 @@ class Weather {
                 return;
             }
             
+            if let httpResponse = response as? HTTPURLResponse {
+                if(httpResponse.statusCode >= 400) {
+                    if let errorRes = self.parseErrorJson(data: data) {
+                        DispatchQueue.main.async {
+                            self.saveError(errorResponse: errorRes);
+                        }
+                    }
+                    return;
+                }
+            }
+                        
             if let weatherRes = self.parseJson(data: data) {
                 DispatchQueue.main.async {
                     // populate weather data from response
@@ -57,6 +69,37 @@ class Weather {
         
         // call api
         dataTask.resume();
+    }
+    
+    static func saveError(errorResponse: ErrorRes) {
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+            return;
+        }
+        
+        let item = ErrorItem(context: context);
+        item.code = Int16(errorResponse.error.code);
+        item.message = errorResponse.error.message;
+        
+        do {
+            try context.save();
+        } catch {
+            print(error);
+        }
+    }
+    
+    static func parseErrorJson(data: Data) -> ErrorRes? {
+        // initialize json decoder
+        let decoder = JSONDecoder();
+        var error: ErrorRes?;
+        
+        // decode response from api
+        do {
+            error =  try decoder.decode(ErrorRes.self, from: data)
+        } catch {
+            print(error)
+        }
+        
+        return error;
     }
     
     static func parseJson(data: Data) -> WeatherResponse? {

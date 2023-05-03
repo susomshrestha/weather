@@ -146,6 +146,11 @@ class AddLocationViewController: UIViewController {
     @IBAction func onCancelPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true);
     }
+    
+    
+    @IBAction func onErrorLogPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToErrorScreen", sender: self)
+    }
 }
 
 extension AddLocationViewController: UITextFieldDelegate {
