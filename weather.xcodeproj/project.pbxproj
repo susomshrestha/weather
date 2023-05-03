@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7618252F29F2B81D004BA561 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7618252E29F2B81D004BA561 /* ErrorViewController.swift */; };
+		7618253829F2C76B004BA561 /* ErrorDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7618253629F2C76B004BA561 /* ErrorDataModel.xcdatamodeld */; };
 		76242DCD29D08B6600D7657C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76242DCC29D08B6600D7657C /* Location.swift */; };
 		76242DCF29D08D1E00D7657C /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76242DCE29D08D1E00D7657C /* Weather.swift */; };
 		76242DD129D08E7600D7657C /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76242DD029D08E7600D7657C /* WeatherModels.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7618252E29F2B81D004BA561 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
+		7618253729F2C76B004BA561 /* ErrorDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ErrorDataModel.xcdatamodel; sourceTree = "<group>"; };
 		76242DCC29D08B6600D7657C /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		76242DCE29D08D1E00D7657C /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		76242DD029D08E7600D7657C /* WeatherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModels.swift; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 				76C8B60E29CB8C9C00FBF851 /* Assets.xcassets */,
 				76C8B61029CB8C9C00FBF851 /* LaunchScreen.storyboard */,
 				76C8B60B29CB8C9B00FBF851 /* Main.storyboard */,
+				7618252E29F2B81D004BA561 /* ErrorViewController.swift */,
+				7618253629F2C76B004BA561 /* ErrorDataModel.xcdatamodeld */,
 			);
 			path = weather;
 			sourceTree = "<group>";
@@ -161,8 +167,10 @@
 				76242DD129D08E7600D7657C /* WeatherModels.swift in Sources */,
 				76C8B60A29CB8C9B00FBF851 /* ViewController.swift in Sources */,
 				76242DD329D09B6E00D7657C /* AddLocationViewController.swift in Sources */,
+				7618253829F2C76B004BA561 /* ErrorDataModel.xcdatamodeld in Sources */,
 				76242DCD29D08B6600D7657C /* Location.swift in Sources */,
 				76C8B60629CB8C9B00FBF851 /* AppDelegate.swift in Sources */,
+				7618252F29F2B81D004BA561 /* ErrorViewController.swift in Sources */,
 				76242DCF29D08D1E00D7657C /* Weather.swift in Sources */,
 				76C8B60829CB8C9B00FBF851 /* SceneDelegate.swift in Sources */,
 			);
@@ -380,6 +388,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7618253629F2C76B004BA561 /* ErrorDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7618253729F2C76B004BA561 /* ErrorDataModel.xcdatamodel */,
+			);
+			currentVersion = 7618253729F2C76B004BA561 /* ErrorDataModel.xcdatamodel */;
+			path = ErrorDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 76C8B5FA29CB8C9B00FBF851 /* Project object */;
 }
